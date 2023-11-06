@@ -103,7 +103,9 @@ def find_open_resolvers(api_key, asn_list, domains, success_threshold, db_conn, 
     api = shodan.Shodan(api_key)
 
     for asn in asn_list:
+        print()
         print(f"Searching for open resolvers with recursion enabled in {asn}...")
+        print()
         try:
             results = api.search(f"asn:{asn} port:53 'Recursion: enabled'")
 
@@ -126,7 +128,10 @@ def find_open_resolvers(api_key, asn_list, domains, success_threshold, db_conn, 
 def find_open_snmp_servers(api_key, communities, db_conn, cache_expiry):
     api = shodan.Shodan(api_key)
 
+    print()
     print("Searching for open SNMP servers...")
+    print()
+    
     try:
         results = api.search("port:161 'public'")
 
