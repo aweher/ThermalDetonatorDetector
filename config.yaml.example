@@ -1,0 +1,24 @@
+---
+shodan_api_key: your-shodan-api-key #required
+
+asns:
+  - AS65001
+  - AS65002
+  - AS65003
+  - AS65004
+  - AS65005
+
+domains_to_test:
+  - ayuda.la
+  - weher.net
+  - manrs.org
+  - atlas.ripe.net
+  - lacnog.org
+success_threshold: 100
+
+snmp_communities:
+  - public
+
+database:
+  path: 'cache.db'
+cache_expiry: 86400  # Cache expiry in seconds (e.g., 86400 seconds for 1 day)
