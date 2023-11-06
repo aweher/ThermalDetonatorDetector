@@ -8,6 +8,7 @@ import dns.resolver
 import sqlite3
 import time
 from pysnmp.hlapi import getCmd, CommunityData, SnmpEngine, UdpTransportTarget, ContextData, ObjectType, ObjectIdentity
+from termcolor import cprint
 
 # Function to read configuration from a YAML file
 def read_config(file_path):
@@ -110,11 +111,13 @@ def find_open_resolvers(api_key, asn_list, domains, success_threshold, db_conn, 
                 ip = result['ip_str']
                 cached_result = check_cache(db_conn, ip, cache_expiry)
                 if cached_result is not None:
-                    print(f"IP: {ip} is {'an open =(' if cached_result else 'not an open'} DNS resolver (cached).")
+                    if cached_result:
+                        cprint(f"🔥 IP: {ip} is an open DNS resolver (cached).", 'red')
                 else:
                     is_resolver = is_open_resolver(ip, domains, success_threshold)
                     update_cache(db_conn, ip, is_resolver)
-                    print(f"IP: {ip} is {'an open =(' if is_resolver else 'not an open'} DNS resolver.")
+                    if is_resolver:
+                        cprint(f"🔥 IP: {ip} is an open DNS resolver.", 'red')
 
         except shodan.APIError as e:
             print(f"Error: {e}")
@@ -131,7 +134,7 @@ def find_open_snmp_servers(api_key, communities, db_conn, cache_expiry):
             ip = result['ip_str']
             cached_result = check_cache(db_conn, ip, cache_expiry)
             if cached_result is not None:
-                print(f"SNMP status for IP: {ip} is cached.")
+                cprint(f"🔥 SNMP status for IP: {ip} is OPEN.", 'red')
             else:
                 if is_open_snmp(ip, communities):
                     update_cache(db_conn, ip, True)
