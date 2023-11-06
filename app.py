@@ -91,7 +91,7 @@ def is_open_snmp(ip, communities):
             else:
                 for varBind in varBinds:
                     if varBind[0].prettyPrint() == '1.3.6.1.2.1.1.5.0':
-                        print(f"SNMP open on {ip}, sysName: {varBind[1].prettyPrint()}")
+                        print(f"SNMP open =( on {ip}, sysName: {varBind[1].prettyPrint()}")
                         return True
         except Exception as e:
             print(f"Exception with {ip}: {e}")
@@ -110,11 +110,11 @@ def find_open_resolvers(api_key, asn_list, domains, success_threshold, db_conn, 
                 ip = result['ip_str']
                 cached_result = check_cache(db_conn, ip, cache_expiry)
                 if cached_result is not None:
-                    print(f"IP: {ip} is {'an open' if cached_result else 'not an open'} DNS resolver (cached).")
+                    print(f"IP: {ip} is {'an open =(' if cached_result else 'not an open'} DNS resolver (cached).")
                 else:
                     is_resolver = is_open_resolver(ip, domains, success_threshold)
                     update_cache(db_conn, ip, is_resolver)
-                    print(f"IP: {ip} is {'an open' if is_resolver else 'not an open'} DNS resolver.")
+                    print(f"IP: {ip} is {'an open =(' if is_resolver else 'not an open'} DNS resolver.")
 
         except shodan.APIError as e:
             print(f"Error: {e}")
