@@ -164,6 +164,7 @@ if __name__ == "__main__":
 
     # SNMP server search
     snmp_communities = config['snmp_communities']
-    find_open_snmp_servers(shodan_api_key, snmp_communities, db_conn, cache_expiry)
+    # disabled (library reasons)
+    # find_open_snmp_servers(shodan_api_key, snmp_communities, db_conn, cache_expiry)
 
     db_conn.close()
