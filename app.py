@@ -140,11 +140,14 @@ def find_open_snmp_servers(api_key, communities, db_conn, cache_expiry):
             cached_result = check_cache(db_conn, ip, cache_expiry)
             if cached_result is not None:
                 cprint(f"🔥 SNMP status for IP: {ip} is OPEN.", 'red')
-            else:
-                if is_open_snmp(ip, communities):
-                    update_cache(db_conn, ip, True)
-                else:
-                    update_cache(db_conn, ip, False)
+                update_cache(db_conn, ip, True)
+
+# SNMP Library is broken in Python 3.11
+#            else:
+#                if is_open_snmp(ip, communities):
+#                    update_cache(db_conn, ip, True)
+#                else:
+#                    update_cache(db_conn, ip, False)
 
     except shodan.APIError as e:
         print(f"Error: {e}")
@@ -164,7 +167,6 @@ if __name__ == "__main__":
 
     # SNMP server search
     snmp_communities = config['snmp_communities']
-    # disabled (library reasons)
-    # find_open_snmp_servers(shodan_api_key, snmp_communities, db_conn, cache_expiry)
+    find_open_snmp_servers(shodan_api_key, snmp_communities, db_conn, cache_expiry)
 
     db_conn.close()
